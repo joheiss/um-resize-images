@@ -1,5 +1,6 @@
 package com.jovisco.um.imagescalerui.services;
 
+import lombok.Getter;
 import org.imgscalr.Scalr;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +12,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executors;
 
 @Service
 public class ImageScalerServiceImpl implements ImageScalerService {
@@ -20,31 +23,41 @@ public class ImageScalerServiceImpl implements ImageScalerService {
 
         var imagesFilePath = Path.of(sourceDir);
         var resizedImagesDirectory = new File(targetDir);
-        var countOriginalImages = 0;
-        var countResizedImages = 0;
+        var counter = new Counter();
 
-        try (var imageFiles = Files.newDirectoryStream(imagesFilePath, filter)) {
+        try(var es = Executors.newFixedThreadPool(4);
+            var imageFiles = Files.newDirectoryStream(imagesFilePath, filter);) {
+            List<CompletableFuture<Void>> futures = new ArrayList<>();
             for (Path file : imageFiles) {
                 // create target directory if not exists
                 if (!resizedImagesDirectory.exists()) {
                     var created = resizedImagesDirectory.mkdir();
                 }
-                // resize image
-                var originalImage = ImageIO.read(file.toFile());
-                countOriginalImages++;
-                // do not try to resize images to dimensions larger than the original
-                var restrictedWidths = getRestrictedWidths(originalImage, widths);
-                for (var width : restrictedWidths) {
-                    var resizedImage = Scalr.resize(originalImage, width);
-                    var targetFilename = generateTargetFilename(resizedImagesDirectory, file.toString(), width);
-                    ImageIO.write(resizedImage, getFileExtension(targetFilename), new File(targetFilename));
-                    countResizedImages++;
-                }
+                // resize images
+                CompletableFuture<Void> future = CompletableFuture.runAsync(() -> {
+                    try {
+                        var originalImage = ImageIO.read(file.toFile());
+                        counter.incrementOriginalImages();
+                        // do not try to resize images to dimensions larger than the original
+                        var restrictedWidths = getRestrictedWidths(originalImage, widths);
+                        for (var width : restrictedWidths) {
+                            var resizedImage = Scalr.resize(originalImage, width);
+                            var targetFilename = generateTargetFilename(resizedImagesDirectory, file.toString(), width);
+                            var imageFormat = getFileExtension(targetFilename).substring(1);
+                            ImageIO.write(resizedImage, imageFormat, new File(targetFilename));
+                            counter.incrementResizedImages();
+                        }
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }, es);
+                futures.add(future);
             }
+            CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return new ImageScalerResponse(countOriginalImages, countResizedImages);
+        return new ImageScalerResponse(counter.getCountOriginalImages(), counter.getCountResizedImages());
     }
 
     private List<Integer> getRestrictedWidths(BufferedImage originalImage, List<Integer> widths) {
@@ -58,12 +71,26 @@ public class ImageScalerServiceImpl implements ImageScalerService {
         var sourcePathName = inputFilename.substring(0, inputFilename.lastIndexOf("/"));
         var filename = inputFilename.substring(0, inputFilename.lastIndexOf("."));
         filename = filename.replace(sourcePathName, "");
-        filename = targetPathName + "/" + filename + "_" + targetWidth;
+        filename = targetPathName + filename + "_" + targetWidth;
         var extension = inputFilename.substring(inputFilename.lastIndexOf("."));
         return filename + extension;
     }
 
     private String getFileExtension(String filename) {
         return filename.substring(filename.lastIndexOf("."));
+    }
+
+    @Getter
+    static class Counter {
+        volatile int countOriginalImages = 0;
+        volatile int countResizedImages = 0;
+
+        public synchronized void incrementOriginalImages() {
+            countOriginalImages++;
+        }
+
+        public synchronized void incrementResizedImages() {
+            countResizedImages++;
+        }
     }
 }
