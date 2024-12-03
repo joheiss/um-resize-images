@@ -1,0 +1,17 @@
+* {
+  -fx-font-family: "Arial";
+  font-family: "Arial";
+  -fx-font-size: 10pt;
+  font-size: 10pt;
+}
+
+.big {
+  -fx-font-size: 12pt;
+  font-size: 12pt;
+  -fx-text-fill: #35568c;
+}
+
+#app-title {
+  -fx-font: normal light 36pt "Helvetica";
+  -fx-text-fill: -fx-accent;
+}

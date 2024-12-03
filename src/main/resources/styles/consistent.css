@@ -1,0 +1,6 @@
+.label {
+    -fx-font-weight: bold;
+    font-weight: bold;
+    -fx-font-size: large;
+    font-size: large;
+  }

@@ -1,0 +1,170 @@
+.root {
+  /* -fx-font-size: 12pt;
+  -fx-font-family: "Arial";
+  font-size: 14pt;
+  font-family: "Arial"; */
+  -fx-accent: #ffbc99;
+  -fx-focus-color: -fx-accent;
+  -fx-text: #ffdec9;
+  -fx-base: #000000;
+  -fx-background: #000000;
+  -fx-control-inner-background: derive(-fx-base, 35%);
+  -fx-control-inner-background-alt: -fx-control-inner-background;
+  -fx-background-color: #000000;
+  -fx-text-box-border: -fx-accent;
+}
+
+.label {
+  -fx-text-fill: lightgray;
+}
+
+.text-field {
+  -fx-prompt-text-fill: gray;
+}
+
+.titulo .text {
+  -fx-font-weight: bold;
+  -fx-font-size: 18px;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.title .text {
+  -fx-font-weight: bold;
+  -fx-font-size: 18px;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.button {
+  -fx-focus-traversable: false;
+  -fx-background-color: -fx-text;
+  -fx-text-fill: #000000;
+  -fx-font-weight: bold;
+  -fx-font-size: 14px;
+  background-color: -fx-text;
+  text-fill: #000000;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.button:hover {
+  -fx-text-fill: #000000;
+  -fx-background-color: -fx-accent;
+  text-fill: #000000;
+  background-color: -fx-accent;
+}
+
+.check-box .box {
+  -fx-background-color: -fx-text;
+  -fx-border-color: -fx-text;
+  -fx-border-radius: 3px;
+}
+
+.check-box:hover .box {
+  -fx-background-color: -fx-accent;
+}
+.check-box:selected .mark {
+  -fx-background-color: #000000;
+}
+
+.check-box:selected .box {
+  -fx-background-color: -fx-text;
+}
+
+.separator *.line {
+  -fx-background-color: #000000;
+  -fx-border-style: solid;
+  -fx-border-width: 1px;
+  background-color: #000000;
+  border-style: solid;
+  border-width: 1px;
+}
+
+.scroll-bar {
+  -fx-background-color: derive(-fx-base, 45%);
+  background-color: derive(-fx-base, 45%);
+}
+
+.button:default {
+  -fx-base: -fx-accent;
+}
+
+.table-view {
+  /*-fx-background-color: derive(-fx-base, 10%);*/
+  -fx-selection-bar-non-focused: derive(-fx-base, 50%);
+}
+
+.table-view .column-header .label {
+  -fx-alignment: CENTER_LEFT;
+  -fx-font-weight: none;
+  font-weight: none;
+}
+
+.list-cell:even,
+.list-cell:odd,
+.table-row-cell:even,
+.table-row-cell:odd {
+  -fx-control-inner-background: derive(-fx-base, 15%);
+}
+
+.list-cell:empty,
+.table-row-cell:empty {
+  -fx-background-color: transparent;
+  background-color: transparent;
+}
+
+.list-cell,
+.table-row-cell {
+  -fx-border-color: transparent;
+  border-color: transparent;
+  -fx-table-cell-border-color: transparent;
+}
+
+.dialog-pane {
+  -fx-background-color: -fx-base;
+  background-color: -fx-base;
+}
+
+.dialog-pane .label {
+  -fx-text-fill: lightgray;
+}
+
+.dialog-pane:header .header-panel {
+  -fx-background-color: -fx-base;
+  background-color: -fx-base;
+}
+
+.choice-box .arrow {
+  -fx-background-color: #ffbc99;
+  background-color: #ffbc99;
+}
+.choice-box .arrow-button {
+  -fx-background-color: transparent;
+  background-color: transparent;
+}
+
+.date-picker .arrow-button {
+  -fx-background-color: -fx-accent;
+  background-color: -fx-accent;
+}
+
+.date-picker-popup .spinner .button .left-arrow,
+.date-picker-popup .spinner .button .right-arrow {
+  -fx-background-color: -fx-accent;
+  background-color: -fx-accent;
+}
+
+#confBtn {
+  -fx-padding: 10 20;
+  padding: 10 20;
+  -fx-font-size: 16px;
+  font-size: 16px;
+  -fx-background-color: -fx-accent;
+  background-color: -fx-accent;
+}
+
+#confBtn .arrow {
+  -fx-background-color: white;
+  background-color: white;
+}

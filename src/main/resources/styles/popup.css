@@ -1,0 +1,15 @@
+.root {
+  -fx-background-color: black;
+  background-color: black;
+}
+
+.popup {
+  /* -fx-border-color: red;
+  border-color: red;
+  -fx-border-width: 3;
+  border-width: 3;
+  -fx-border-style: solid;
+  border-style: solid; */
+  -fx-background-color: lightcoral;
+  background-color: lightcoral;
+}

@@ -1,0 +1,29 @@
+.combo-box-base {
+  -fx-background-color: transparent; /* -fx-shadow-highlight-color, -fx-outer-border, -fx-inner-border, -fx-body-color; */
+  background-color: transparent;
+  -fx-content-display: LEFT;
+  -fx-border-color: transparent;
+  border-color: transparent;
+  -fx-width: 100%;
+  width: 100%;
+}
+
+.combo-box .arrow {
+  -fx-background-color: #f3137cc4;
+  background-color: #f3137cc4;
+}
+.combo-box .arrow-button {
+  -fx-background-color: transparent;
+  background-color: transparent;
+}
+
+.combo-box {
+  -fx-pref-width: 200;
+}
+
+/** Size the combo-box drop down list. */
+.combo-box-popup > .list-view {
+  -fx-pref-width: 500;
+  -fx-max-width: 500;
+  max-width: 500;
+}

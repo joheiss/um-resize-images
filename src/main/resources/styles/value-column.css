@@ -1,0 +1,11 @@
+/* .table-cell {
+  -fx-alignment: CENTER;
+} */
+
+.text-field {
+  -fx-pref-width: 200px;
+  -fx-min-width: 200px;
+  -fx-max-width: 200px;
+  min-width: 200px;
+  max-width: 200px;
+}

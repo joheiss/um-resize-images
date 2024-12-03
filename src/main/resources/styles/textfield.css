@@ -1,0 +1,17 @@
+
+
+.text-field {
+  -fx-background-color: -fx-text-box-border, -fx-background;
+  background-color: -fx-text-box-border, -fx-background;
+  -fx-text-fill: -fx-text;
+  -fx-prompt-text-fill: -fx-text;
+  -fx-border-color: -fx-text;
+  -fx-border-style: solid;
+  -fx-border-width: 1px ;
+  -fx-background-insets: 1, 1 1 1 1;
+  -fx-background-radius: 5;
+}
+.text-field:focused {
+  -fx-background-color: -fx-focus-color, -fx-background;
+  background-color: -fx-focus-color, -fx-background;
+}

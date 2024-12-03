@@ -1,0 +1,4 @@
+#app-title {
+    -fx-font: normal light 36pt "Helvetica";
+    -fx-text-fill: -fx-accent;
+}

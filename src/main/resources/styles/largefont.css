@@ -1,0 +1,12 @@
+* {
+  -fx-font-family: "Arial";
+  font-family: "Arial";
+  -fx-font-size: 14pt;
+  font-size: 14pt;
+}
+
+.big {
+  -fx-font-size: 18pt;
+  font-size: 18pt;
+  -fx-text-fill: #35568c;
+}
