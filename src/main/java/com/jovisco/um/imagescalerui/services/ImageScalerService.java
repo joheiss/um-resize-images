@@ -1,6 +1,5 @@
 package com.jovisco.um.imagescalerui.services;
 
-import java.io.IOException;
 import java.util.List;
 
 public interface ImageScalerService {

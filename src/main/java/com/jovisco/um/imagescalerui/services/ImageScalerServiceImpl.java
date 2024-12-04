@@ -1,5 +1,6 @@
 package com.jovisco.um.imagescalerui.services;
 
+import com.jovisco.um.imagescalerui.ProgressCounter;
 import lombok.Getter;
 import org.imgscalr.Scalr;
 import org.springframework.stereotype.Service;
@@ -23,7 +24,7 @@ public class ImageScalerServiceImpl implements ImageScalerService {
 
         var imagesFilePath = Path.of(sourceDir);
         var resizedImagesDirectory = new File(targetDir);
-        var counter = new Counter();
+        var counter = ProgressCounter.getInstance();
 
         try(var es = Executors.newFixedThreadPool(4);
             var imageFiles = Files.newDirectoryStream(imagesFilePath, filter);) {
@@ -78,19 +79,5 @@ public class ImageScalerServiceImpl implements ImageScalerService {
 
     private String getFileExtension(String filename) {
         return filename.substring(filename.lastIndexOf("."));
-    }
-
-    @Getter
-    static class Counter {
-        volatile int countOriginalImages = 0;
-        volatile int countResizedImages = 0;
-
-        public synchronized void incrementOriginalImages() {
-            countOriginalImages++;
-        }
-
-        public synchronized void incrementResizedImages() {
-            countResizedImages++;
-        }
     }
 }

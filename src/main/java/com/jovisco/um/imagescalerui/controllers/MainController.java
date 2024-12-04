@@ -10,9 +10,11 @@ import javafx.stage.DirectoryChooser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
@@ -41,8 +43,8 @@ public class MainController implements Initializable {
     @FXML public CheckBox chkResolution64;
     @FXML public Button btnClose;
     @FXML public Button btnOK;
-    @FXML public TextField txfProgress;
-    @FXML public ProgressBar prbProgress;
+//    @FXML public TextField txfProgress;
+//    @FXML public ProgressBar prbProgress;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -64,7 +66,7 @@ public class MainController implements Initializable {
         chkResolution1536.selectedProperty().bindBidirectional(State.INSTANCE.getResolution1536());
         chkResolution1792.selectedProperty().bindBidirectional(State.INSTANCE.getResolution1792());
         chkResolution2048.selectedProperty().bindBidirectional(State.INSTANCE.getResolution2048());
-        prbProgress.progressProperty().bindBidirectional(State.INSTANCE.getProgress());
+//        prbProgress.progressProperty().bindBidirectional(State.INSTANCE.getProgress());
 
         btnOK.disableProperty().bind(
                 State.INSTANCE.getAnyFormat().not()
@@ -76,13 +78,13 @@ public class MainController implements Initializable {
     }
 
     @FXML
-    public void handleSourceDirSelection() {
+    public void handleSourceDirSelection() throws IOException {
         txfSourceDir.setText(chooseDirectory("Select source directory for image resizing"));
         System.out.println("State target dir: " + State.INSTANCE.getTargetDir());
     }
 
     @FXML
-    public void handleTargetDirSelection() {
+    public void handleTargetDirSelection() throws IOException {
         txfTargetDir.setText(chooseDirectory("Select target directory for image resizing"));
         System.out.println("State target dir: " + State.INSTANCE.getTargetDir());
     }
@@ -93,7 +95,7 @@ public class MainController implements Initializable {
     }
 
     @FXML
-    public void handleOK() {
+    public void handleOK() throws IOException {
 
         try {
             // build request map
@@ -110,7 +112,7 @@ public class MainController implements Initializable {
 
     }
 
-    public void showPopUp(Alert.AlertType alertType, String title, String message) {
+    public void showPopUp(Alert.AlertType alertType, String title, String message) throws IOException {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);
         TextArea messageTextArea = new TextArea(message);
@@ -118,17 +120,14 @@ public class MainController implements Initializable {
         messageTextArea.setEditable(false);
         DialogPane dialogPane = alert.getDialogPane();
         dialogPane.setContent(messageTextArea);
-//        dialogPane.getStylesheets()
-//                .add(Objects.requireNonNull(
-//                        getClass().getResource(ColorTheme.getCssPath(getColorTheme()))).toExternalForm());
-//        dialogPane.getStylesheets()
-//                .add(Objects.requireNonNull(
-//                        getClass().getResource(FontSize.getCssPath(getFontSize()))).toExternalForm());
+        // load stylesheets according to application config
+        dialogPane.getStylesheets().add(new ClassPathResource("styles/dark.css").getURL().toExternalForm());
+        dialogPane.getStylesheets().add(new ClassPathResource("styles/smallfont.css").getURL().toExternalForm());
         alert.setResizable(true);
         alert.show();
     }
 
-    private String chooseDirectory(String title) {
+    private String chooseDirectory(String title) throws IOException {
         try {
             var chooser = new DirectoryChooser();
             chooser.setTitle(title);

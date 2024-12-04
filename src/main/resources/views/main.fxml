@@ -107,7 +107,7 @@
                         <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="40.0">
                            <children>
                               <Button fx:id="btnClose" mnemonicParsing="false" onAction="#handleClose" prefHeight="32.0" prefWidth="80.0" text="Close" />
-                              <Button fx:id="btnOK" mnemonicParsing="false" onAction="#handleOK" prefHeight="32.0" prefWidth="80.0" text="OK" />
+                              <Button fx:id="btnOK" mnemonicParsing="false" onAction="#handleOK" prefHeight="32.0" prefWidth="80.0" text="Resize" />
                            </children>
                            <padding>
                               <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
@@ -123,6 +123,7 @@
                </center>
                <bottom>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="BOTTOM_CENTER">
+                     <!--
                      <children>
                         <TextField fx:id="txfProgress" />
                         <ProgressBar fx:id="prbProgress" prefWidth="200.0" progress="0.0" />
@@ -130,6 +131,7 @@
                      <padding>
                         <Insets bottom="20.0" left="60.0" right="60.0" top="20.0" />
                      </padding>
+                     -->
                   </HBox>
                </bottom>
                <top>
