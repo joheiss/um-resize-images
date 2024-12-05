@@ -5,7 +5,10 @@ import com.jovisco.um.imagescalerui.jfx.UiState;
 import com.jovisco.um.imagescalerui.services.ImageScalerServiceAdapter;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -25,6 +28,10 @@ public class MainController implements Initializable {
 
     private final ImageScalerServiceAdapter service;
 
+    @FXML public StackPane stackPane;
+    @FXML public VBox root;
+    @FXML public VBox progressBox;
+
     @FXML public TextField txfSourceDir;
     @FXML public Button btnSourceDir;
     @FXML public CheckBox chkJpg;
@@ -43,8 +50,6 @@ public class MainController implements Initializable {
     @FXML public CheckBox chkResolution64;
     @FXML public Button btnClose;
     @FXML public Button btnOK;
-//    @FXML public TextField txfProgress;
-//    @FXML public ProgressBar prbProgress;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -80,13 +85,11 @@ public class MainController implements Initializable {
     @FXML
     public void handleSourceDirSelection() throws IOException {
         txfSourceDir.setText(chooseDirectory("Select source directory for image resizing"));
-        System.out.println("State target dir: " + State.INSTANCE.getTargetDir());
     }
 
     @FXML
     public void handleTargetDirSelection() throws IOException {
         txfTargetDir.setText(chooseDirectory("Select target directory for image resizing"));
-        System.out.println("State target dir: " + State.INSTANCE.getTargetDir());
     }
 
     @FXML
@@ -97,6 +100,14 @@ public class MainController implements Initializable {
     @FXML
     public void handleOK() throws IOException {
 
+        // show progress indicator
+        if (stackPane != null) {
+            var progressIndicator = new ProgressIndicator();
+            progressBox = new VBox(progressIndicator);
+            progressBox.setAlignment(Pos.CENTER);
+            root.setDisable(true);
+            stackPane.getChildren().add(progressBox);
+        }
         try {
             // build request map
             var requestMap = buildRequestMap();
@@ -108,8 +119,12 @@ public class MainController implements Initializable {
 
         } catch (Exception e) {
             showPopUp(Alert.AlertType.ERROR, "Error", e.getMessage());
+        } finally {
+            root.setDisable(false);
+            if (stackPane != null) {
+                stackPane.getChildren().remove(progressBox);
+            }
         }
-
     }
 
     public void showPopUp(Alert.AlertType alertType, String title, String message) throws IOException {
@@ -134,7 +149,7 @@ public class MainController implements Initializable {
             File directory = chooser.showDialog(UiState.getStage());
             return (directory != null) ? directory.getAbsolutePath() : null;
         } catch (Exception e) {
-            showPopUp(Alert.AlertType.ERROR, "Select Source Directory", e.getLocalizedMessage());
+            showPopUp(Alert.AlertType.ERROR, title, e.getLocalizedMessage());
             e.printStackTrace();
         }
         return null;

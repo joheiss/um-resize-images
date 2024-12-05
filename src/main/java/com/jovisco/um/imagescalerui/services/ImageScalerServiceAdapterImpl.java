@@ -26,6 +26,7 @@ public class ImageScalerServiceAdapterImpl extends javafx.concurrent.Service<Ima
     @Override
     public ImageScalerResponse execute(Map<String, Object> requestMap) {
         // map from request map
+        if (requestMap == null) throw new IllegalArgumentException("requestMap cannot be null");
         mapRequestToParams(requestMap);
         // invoke service
         return imageScalerService.execute(sourceDir, targetDir, filter, widths);
