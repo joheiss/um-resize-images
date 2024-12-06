@@ -1,5 +1,6 @@
 package com.jovisco.um.imagescalerui.controllers;
 
+import com.jovisco.um.imagescalerui.ProgressCounter;
 import com.jovisco.um.imagescalerui.State;
 import com.jovisco.um.imagescalerui.jfx.UiState;
 import com.jovisco.um.imagescalerui.services.ImageScalerServiceAdapter;
@@ -116,7 +117,7 @@ public class MainController implements Initializable {
             showPopUp(Alert.AlertType.INFORMATION, "Success",
                     String.format("%d images found and resized into %d new images",
                             response.countOriginalImages(), response.countResizedImages()));
-
+            resetCounters();
         } catch (Exception e) {
             showPopUp(Alert.AlertType.ERROR, "Error", e.getMessage());
         } finally {
@@ -172,5 +173,10 @@ public class MainController implements Initializable {
         request.put("resolution1792", State.INSTANCE.getResolution1792().getValue());
         request.put("resolution2048", State.INSTANCE.getResolution2048().getValue());
         return request;
+    }
+
+    private void resetCounters() {
+        var counter = ProgressCounter.getInstance();
+        counter.resetCounters();
     }
 }

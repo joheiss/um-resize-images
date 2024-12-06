@@ -31,4 +31,8 @@ public class ProgressCounter {
         countResizedImages++;
     }
 
+    public synchronized void resetCounters() {
+        countOriginalImages = 0;
+        countResizedImages = 0;
+    }
 }
