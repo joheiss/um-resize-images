@@ -26,7 +26,7 @@ public class ImageScalerServiceImpl implements ImageScalerService {
         var resizedImagesDirectory = new File(targetDir);
         var counter = ProgressCounter.getInstance();
 
-        try(var es = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+        try(var es = Executors.newFixedThreadPool(4);
             var imageFiles = Files.newDirectoryStream(imagesFilePath, filter);) {
             List<CompletableFuture<Void>> futures = new ArrayList<>();
             for (Path file : imageFiles) {

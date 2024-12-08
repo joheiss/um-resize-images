@@ -36,14 +36,15 @@ public class ImageScalerServiceAdapterImpl extends javafx.concurrent.Service<Ima
         // map from request map
         sourceDir = (String) requestMap.get("sourceDir");
         targetDir = (String) requestMap.get("targetDir");
-        filter = "*.{jpg,png}";
+        filter = "*.{jpg,JPG,jpeg,JPEG,png,PNG}";
         if (requestMap.get("jpg").toString().equals("false")) {
-            filter = filter.replace("jpg", "");
+            filter = filter.replaceAll("(?i)jpg", "");
+            filter = filter.replaceAll("(?i)jpeg", "");
         }
         if (requestMap.get("png").toString().equals("false")) {
-            filter = filter.replace("png", "");
+            filter = filter.replaceAll("(?i)png", "");
         }
-        widths = new ArrayList<Integer>();
+        widths = new ArrayList<>();
         requestMap.forEach((key, value) -> {
             if (key.contains("resolution") && value.toString().equals("true")) {
                 var size = Integer.parseInt(key.replace("resolution", ""));
